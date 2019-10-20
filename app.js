@@ -32,22 +32,28 @@ app.get('/scrape', function(req, res){
     });
 });
 
-app.get('/no-flash', function(req, res){
-    res.redirect('/');
-});
-
 function makeRequest(url, callback) {
     console.log("Request to " + url + " performed");
     request.get(url, function (err, res, html) {
         if (!err && res.statusCode == 200) {
             const $ = cheerio.load(html);
             const body = $("body").html();
-            var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+            let arrEmail = uniqueEmailSearch(body);
             callback(arrEmail);
         } else {
             console.log("error:" + err);
         }
     });
+}
+
+function uniqueEmailSearch(body) {
+    var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+    return removeDuplicates(arrEmail);
+}
+
+function removeDuplicates(arr){
+    let arrUnique = Array.from(new Set(arr))
+    return arrUnique
 }
 
 app.listen(3000);
