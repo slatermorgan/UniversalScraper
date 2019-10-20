@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Express 3.x Example for connect-flash</title>
+	</head>
+	<body>
+
+<form action="/scrape" method="GET">
+	<div>
+		<label for="name">Text:</label>
+		<input type="text" id="name" name="name">
+	</div>
+	<div class="button">
+	<button type="submit">Send your message</button>
+	</div>
+</form>
+
+<p>
+<a href="/scrape">Scrape</a> | 
+<a href="/no-flash">No Flash</a>
+</p>
+
+<% if (message) { %>
+<p><%= message %></p>
+<% } %>
+
+	</body>
+</html>
