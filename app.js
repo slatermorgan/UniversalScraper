@@ -38,7 +38,7 @@ function makeRequest(url, callback) {
         if (!err && res.statusCode == 200) {
             const $ = cheerio.load(html);
             const body = $("body").html();
-            let arrEmail = uniqueEmailSearch(body);
+            let arrEmail = uniquePhoneSearch(body);
             callback(arrEmail);
         } else {
             console.log("error:" + err);
@@ -49,6 +49,13 @@ function makeRequest(url, callback) {
 function uniqueEmailSearch(body) {
     var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
     return removeDuplicates(arrEmail);
+}
+
+function uniquePhoneSearch(body) {
+    let arrPhone = [];
+    var matchedPhone = body.match(/^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$/gi);
+    arrPhone.push(matchedPhone);
+    return removeDuplicates(arrPhone);
 }
 
 function removeDuplicates(arr){
