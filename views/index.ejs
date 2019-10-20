@@ -5,23 +5,42 @@
 	</head>
 	<body>
 
-    <form action="/scrape" method="GET">
-        <div>
-            <label for="link">Text:</label>
-            <input type="text" id="link" name="link" value="http://alban-financial.co.uk/">
-        </div>
-        <div class="button">
-        <button type="submit">Send your message</button>
-        </div>
-    </form>
-    <p>
-    <a href="/scrape">Scrape</a> | 
-    <a href="/no-flash">No Flash</a>
-    </p>
+    <div class="container m-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Universal Email Scraper</h1>
+            <p class="lead">Perform a simple web scrape to extract contact information from company websites</p>
+            <hr class="my-4">
 
-    <% emails.forEach(function(element) { %>
-        <li><%= element %></li>
-    <% }); %>
+            <p class="lead">
+            <form action="/scrape" method="GET">
+            <div class="form-group">
+                <input type="text" class="form-control" id="link" name="link" placeholder="Website URL" value="http://alban-financial.co.uk/">
+            </div>
+            <button type="submit" class="btn btn-primary">Scrape</button>
+            </form>
+            </p>
+        </div>
+    </div>
+
+    <div class="container m-4">
+        <ul class="list-group">
+            <li class="list-group-item active">Email Addresses Recovered</li>
+            <% emails.forEach(function(element) { %>
+                <li class="list-group-item"><%= element %></li>
+            <% }); %>
+        </ul>
+    </div>
 
 	</body>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>
