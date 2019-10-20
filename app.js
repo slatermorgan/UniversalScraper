@@ -1,42 +1,53 @@
 var express = require('express')
   , flash = require('connect-flash')
   , util = require('util')
-  , bodyParser = require('body-parser');
-
+  , bodyParser = require('body-parser')
+  , request = require('request')
+  , cheerio = require("cheerio");
 
 var app = express();
 
 // configure Express
 app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser('keyboard cat'));
-  app.use(express.session({ key: 'sid', cookie: { maxAge: 60000 }}));
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'ejs');
+    app.use(express.logger());
+    app.use(express.cookieParser('keyboard cat'));
+    app.use(express.session({ key: 'sid', cookie: { maxAge: 60000 }}));
   
-  // Use connect-flash middleware.  This will add a `req.flash()` function to
-  // all requests, matching the functionality offered in Express 2.x.
-  
-  app.use(flash());
-  app.use(app.router);
+    app.use(flash());
+    app.use(app.router);
 });
 
 app.get('/', function(req, res){
-  res.render('index', { message: req.flash('info') });
+    console.log(req.flash('arrEmails'));
+    res.render('index', { emails: req.flash('arrEmails') });
 });
 
 app.get('/scrape', function(req, res){
-  req.flash('info', req.query.name)
-  res.redirect('/');
-});fgefa
+    let strLink = req.query.link;
+    makeRequest(strLink, function (arrEmails) {
+        req.flash('arrEmails', arrEmails)
+        res.redirect('/');
+    });
+});
 
 app.get('/no-flash', function(req, res){
-  res.redirect('/');
-});
-
-app.get('/multiple-flash', function(req, res){
-    req.flash('info', ['Welcome', 'Please Enjoy']);
     res.redirect('/');
 });
+
+function makeRequest(url, callback) {
+    console.log("Request to " + url + " performed");
+    request.get(url, function (err, res, html) {
+        if (!err && res.statusCode == 200) {
+            const $ = cheerio.load(html);
+            const body = $("body").html();
+            var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+            callback(arrEmail);
+        } else {
+            console.log("error:" + err);
+        }
+    });
+}
 
 app.listen(3000);

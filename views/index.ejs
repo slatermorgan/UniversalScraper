@@ -5,24 +5,19 @@
 	</head>
 	<body>
 
-<form action="/scrape" method="GET">
-	<div>
-		<label for="name">Text:</label>
-		<input type="text" id="name" name="name">
-	</div>
-	<div class="button">
-	<button type="submit">Send your message</button>
-	</div>
-</form>
-
-<p>
-<a href="/scrape">Scrape</a> | 
-<a href="/no-flash">No Flash</a>
-</p>
-
-<% if (message) { %>
-<p><%= message %></p>
-<% } %>
+    <form action="/scrape" method="GET">
+        <div>
+            <label for="link">Text:</label>
+            <input type="text" id="link" name="link" value="http://alban-financial.co.uk/">
+        </div>
+        <div class="button">
+        <button type="submit">Send your message</button>
+        </div>
+    </form>
+    <p>
+    <a href="/scrape">Scrape</a> | 
+    <a href="/no-flash">No Flash</a>
+    </p>
 
 	</body>
 </html>
