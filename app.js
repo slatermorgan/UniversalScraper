@@ -20,8 +20,8 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res){
-    console.log(req.flash('arrEmails'));
-    res.render('index', { emails: req.flash('arrEmails') });
+    let arrEmails = req.flash('arrEmails');
+    res.render('index', { emails: arrEmails});
 });
 
 app.get('/scrape', function(req, res){
