@@ -6,7 +6,7 @@ var express = require('express')
   , cheerio = require("cheerio");
 
 var app = express();
-
+app.use(express.static('public'));
 // configure Express
 app.configure(function() {
     app.set('views', __dirname + '/views');
@@ -14,7 +14,6 @@ app.configure(function() {
     app.use(express.logger());
     app.use(express.cookieParser('keyboard cat'));
     app.use(express.session({ key: 'sid', cookie: { maxAge: 60000 }}));
-  
     app.use(flash());
     app.use(app.router);
 });
@@ -38,7 +37,7 @@ function makeRequest(url, callback) {
         if (!err && res.statusCode == 200) {
             const $ = cheerio.load(html);
             const body = $("body").html();
-            let arrEmail = uniquePhoneSearch(body);
+            let arrEmail = uniqueEmailSearch(body);
             callback(arrEmail);
         } else {
             console.log("error:" + err);
