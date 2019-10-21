@@ -19,26 +19,69 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res){
-    let arrEmails = req.flash('arrEmails');
-    res.render('index', { emails: arrEmails});
+    res.render('index');
 });
 
 app.get('/scrape', function(req, res){
     let strLink = req.query.link;
-    makeRequest(strLink, function (arrEmails) {
-        req.flash('arrEmails', arrEmails)
-        res.redirect('/');
+    makeRequest(strLink, function (objData) {
+        req.flash('objData', objData)
+        res.redirect('/result');
     });
+});
+
+app.get('/result', function(req, res){
+    let objData = req.flash('objData');
+
+    // Stops server crashing on refresh
+    if (!objData[0]) {
+        res.redirect('/');
+    }
+
+    let arrEmails = objData[0].EmailAddresses,
+        arrPhones = [],
+        arrPostcodes = [],
+        arrSocial = [];
+
+    console.log(objData[0]);
+
+    res.render(
+        'result',
+        {
+            emails    : arrEmails,
+            phones    : arrPhones,
+            postcodes : arrPostcodes,
+            social    : arrSocial
+        }
+    );
 });
 
 function makeRequest(url, callback) {
     console.log("Request to " + url + " performed");
+
+    let objData = {
+        EmailAddresses : [],
+        PhoneNumbers   : [],
+        Postcodes      : [],
+        LinkedIn       : [],
+        Facebook       : [],
+        Twitter        : []
+    };
+
     request.get(url, function (err, res, html) {
         if (!err && res.statusCode == 200) {
             const $ = cheerio.load(html);
-            const body = $("body").html();
-            let arrEmail = uniqueEmailSearch(body);
-            callback(arrEmail);
+            const htmlBody = $("body").html();
+            const textBody = $("body").text();
+
+            objData.EmailAddresses  = uniqueEmailSearch(htmlBody);
+            objData.PhoneNumbers    = uniquePhoneSearch(textBody);
+            objData.Postcodes       = [];
+            objData.LinkedIn        = [];
+            objData.Facebook        = [];
+            objData.Twitter         = [];
+
+            callback(objData);
         } else {
             console.log("error:" + err);
         }
