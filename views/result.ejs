@@ -23,6 +23,42 @@
         </div>
     </div>
 
+    <div class="container m-4">
+        <ul class="list-group">
+            <li class="list-group-item active"> Email Addresses Recovered</li>
+            <% emails.forEach(function(element) { %>
+                <li class="list-group-item"><%= element %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div class="container m-4">
+        <ul class="list-group">
+            <li class="list-group-item active"> Phone Numbers Recovered</li>
+            <% phones.forEach(function(element) { %>
+                <li class="list-group-item"><%= element %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div class="container m-4">
+        <ul class="list-group">
+            <li class="list-group-item active"> Addresses Recovered</li>
+            <% phones.forEach(function(element) { %>
+                <li class="list-group-item"><%= element %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div class="container m-4">
+        <ul class="list-group">
+            <li class="list-group-item active"> Social Recovered</li>
+            <% social.forEach(function(element) { %>
+                <li class="list-group-item"><%= element %></li>
+            <% }); %>
+        </ul>
+    </div>
+
 	</body>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
