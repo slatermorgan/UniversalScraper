@@ -38,10 +38,12 @@ app.get('/result', function(req, res){
         res.redirect('/');
     }
 
-    let arrEmails = objData[0].EmailAddresses,
-        arrPhones = [],
-        arrPostcodes = [],
-        arrSocial = [];
+    let arrEmails    = objData[0].EmailAddresses,
+        arrPhones    = objData[0].PhoneNumbers,
+        arrPostcodes = objData[0].Postcodes,
+        arrLinkedIn  = objData[0].LinkedIn,
+        arrFacebook  = objData[0].Facebook,
+        arrTwitter   = objData[0].Twitter;
 
     console.log(objData[0]);
 
@@ -51,7 +53,10 @@ app.get('/result', function(req, res){
             emails    : arrEmails,
             phones    : arrPhones,
             postcodes : arrPostcodes,
-            social    : arrSocial
+            linkedIn  : arrLinkedIn,
+            facebook  : arrFacebook,
+            twitter   : arrTwitter,
+
         }
     );
 });
@@ -61,11 +66,11 @@ function makeRequest(url, callback) {
 
     let objData = {
         EmailAddresses : [],
-        PhoneNumbers   : [],
-        Postcodes      : [],
-        LinkedIn       : [],
-        Facebook       : [],
-        Twitter        : []
+        PhoneNumbers   : ['0776547560', '0778657560', '0778657444'],
+        Postcodes      : ['LL299XX', 'LL289XO'],
+        LinkedIn       : ['linkedin.com/profile1', 'linkedin.com/profile2'],
+        Facebook       : ['facebook.com/profile1', 'facebook.com/profile2'],
+        Twitter        : ['twitter.com/profile1', 'twitter.com/profile2']
     };
 
     request.get(url, function (err, res, html) {
@@ -75,12 +80,7 @@ function makeRequest(url, callback) {
             const textBody = $("body").text();
 
             objData.EmailAddresses  = uniqueEmailSearch(htmlBody);
-            objData.PhoneNumbers    = uniquePhoneSearch(textBody);
-            objData.Postcodes       = [];
-            objData.LinkedIn        = [];
-            objData.Facebook        = [];
-            objData.Twitter         = [];
-
+            // objData.PhoneNumbers    = uniquePhoneSearch(textBody);
             callback(objData);
         } else {
             console.log("error:" + err);
