@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Express 3.x Example for connect-flash</title>
+		<title>Universal Scraper</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	</head>
     <link rel="stylesheet" href="/styles.css">
 	<body>
 
-    <div class="container m-4">
-        <div class="jumbotron">
-            <h1 class="display-4">Universal Email Scraper</h1>
-            <p class="lead">Perform a simple web scrape to extract contact information from company websites</p>
-            <hr class="my-4">
+    <div class="container">
+        <div class="container m-4">
+            <div class="jumbotron">
+                <h1 class="display-4 text-shadow">Universal Email Scraper</h1>
+                <p class="lead text-shadow">Perform a simple web scrape to extract contact information from company websites</p>
+                <hr class="my-4">
 
-            <p class="lead">
-            <form action="/scrape" method="GET">
-            <div class="form-group">
-                <input type="text" class="form-control" id="link" name="link" placeholder="Website URL" value="http://alban-financial.co.uk/">
+                <p class="lead">
+                <form action="/scrape" method="GET">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="link" name="link" placeholder="Website URL" value="http://alban-financial.co.uk/">
+                </div>
+                <div class="form-group pull-right">
+                    <button type="submit" class="btn btn-info" id="btn-scrape">Scrape</button>
+                </div>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Scrape</button>
-            </form>
-            </p>
         </div>
-    </div>
-
-	</body>
+    </body>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 

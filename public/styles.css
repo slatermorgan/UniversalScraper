@@ -1,3 +1,30 @@
 .jumbotron {
-    color: red;
-};
+    color: black;
+    border-radius: unset !important;
+}
+
+.list-group-item {
+    border-radius: unset !important;
+}
+.info-header {
+    background-color: #5bc0de !important;
+    border-color: #a7c9ee !important;
+}
+#btn-scrape {
+    border-radius: unset !important;
+}
+
+.text-shadow {
+    text-shadow: -3px 3px 11px #5bc0de;
+}
+
+/* Social Icons */
+.fa-facebook-official {
+    color: #3b5998;
+}
+.fa-twitter {
+    color: #38A1F3;
+}
+.fa-linkedin {
+    color: #0077B5;
+}
