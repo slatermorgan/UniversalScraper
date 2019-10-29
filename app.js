@@ -77,10 +77,10 @@ function makeRequest(url, callback) {
         if (!err && res.statusCode == 200) {
             const $ = cheerio.load(html);
             const htmlBody = $("body").html();
-            const textBody = $("body").text();
+            const textBodyTrimmed = $("body").text().replace(/\s\s+/g, ' ');
 
-            objData.EmailAddresses  = uniqueEmailSearch(htmlBody);
-            // objData.PhoneNumbers    = uniquePhoneSearch(textBody);
+            objData.EmailAddresses  = emailSearch(htmlBody);
+            objData.PhoneNumbers    = mobilePhoneSearch(textBodyTrimmed);
             callback(objData);
         } else {
             console.log("error:" + err);
@@ -88,19 +88,26 @@ function makeRequest(url, callback) {
     });
 }
 
-function uniqueEmailSearch(body) {
+function emailSearch(body) {
     var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
     return removeDuplicates(arrEmail);
 }
 
-function uniquePhoneSearch(body) {
+function mobilePhoneSearch(str) {
     let arrPhone = [];
-    var matchedPhone = body.match(/^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$/gi);
+    var matchedPhone = str.match(/(070|071|072|073|074|075|076|077|078|079)\d{7,8}$/gi);
     arrPhone.push(matchedPhone);
     return removeDuplicates(arrPhone);
 }
 
-function removeDuplicates(arr){
+function landlinePhoneSearch(str) {
+    let arrPhone = [];
+    var matchedPhone = str.match(/^0([1-6][0-9]{8,10}|7[0-9]{9})$/gi);
+    arrPhone.push(matchedPhone);
+    return removeDuplicates(arrPhone);
+}
+
+function removeDuplicates(arr) {
     let arrUnique = Array.from(new Set(arr))
     return arrUnique
 }
