@@ -3,7 +3,8 @@ var express = require('express')
   , util = require('util')
   , bodyParser = require('body-parser')
   , request = require('request')
-  , cheerio = require("cheerio");
+  , cheerio = require("cheerio")
+  , search = require('./search');
 
 var app = express();
 app.use(express.static('public'));
@@ -41,9 +42,9 @@ app.get('/result', function(req, res){
     let arrEmails    = objData[0].EmailAddresses,
         arrPhones    = objData[0].PhoneNumbers,
         arrPostcodes = objData[0].Postcodes,
-        arrLinkedIn  = objData[0].LinkedIn,
-        arrFacebook  = objData[0].Facebook,
-        arrTwitter   = objData[0].Twitter;
+        arrLinkedIn  = objData[0].Social.linkedin,
+        arrFacebook  = objData[0].Social.facebook,
+        arrTwitter   = objData[0].Social.twitter;
 
     console.log(objData[0]);
 
@@ -66,11 +67,8 @@ function makeRequest(url, callback) {
 
     let objData = {
         EmailAddresses : [],
-        PhoneNumbers   : ['0776547560', '0778657560', '0778657444'],
-        Postcodes      : ['LL299XX', 'LL289XO'],
-        LinkedIn       : ['linkedin.com/profile1', 'linkedin.com/profile2'],
-        Facebook       : ['facebook.com/profile1', 'facebook.com/profile2'],
-        Twitter        : ['twitter.com/profile1', 'twitter.com/profile2']
+        PhoneNumbers   : [],
+        Postcodes      : []
     };
 
     request.get(url, function (err, res, html) {
@@ -79,18 +77,20 @@ function makeRequest(url, callback) {
             const htmlBody = $("body").html();
             const textBodyTrimmed = $("body").text().replace(/\s\s+/g, ' ');
 
-            objData.EmailAddresses  = emailSearch(htmlBody);
-            objData.PhoneNumbers    = mobilePhoneSearch(textBodyTrimmed);
+            let arrWebPageHrefs = [];
+            $("a").each(function (i, el) {
+                const link = $(el).attr("href");
+                arrWebPageHrefs.push(link);
+            });
+
+            objData.Social          = search.social(arrWebPageHrefs);
+            objData.EmailAddresses  = search.email(htmlBody);
+            objData.PhoneNumbers    = search.phone(arrWebPageHrefs);
             callback(objData);
         } else {
             console.log("error:" + err);
         }
     });
-}
-
-function emailSearch(body) {
-    var arrEmail = body.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
-    return removeDuplicates(arrEmail);
 }
 
 function mobilePhoneSearch(str) {
@@ -105,11 +105,6 @@ function landlinePhoneSearch(str) {
     var matchedPhone = str.match(/^0([1-6][0-9]{8,10}|7[0-9]{9})$/gi);
     arrPhone.push(matchedPhone);
     return removeDuplicates(arrPhone);
-}
-
-function removeDuplicates(arr) {
-    let arrUnique = Array.from(new Set(arr))
-    return arrUnique
 }
 
 app.listen(3000);
