@@ -43,8 +43,8 @@ var search = {
         var arrPhones = [];
         arrWebPageHrefs.forEach(function(strLink){
             if (/tel:/.test(strLink)) {
-                if(arrPhones.indexOf(strLink) === -1) {
-                    arrPhones.push(strLink);
+                if(arrPhones.indexOf(strLink.replace(/\s/g, '')) === -1) {
+                    arrPhones.push(strLink.replace(/\s/g, ''));
                 }
             }
         });
