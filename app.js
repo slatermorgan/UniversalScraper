@@ -23,6 +23,7 @@ app.get('/', function(req, res){
     res.render('index');
 });
 
+// set up routes
 app.get('/scrape', function(req, res){
     let strLink = req.query.link;
     makeRequest(strLink, function (objData) {
@@ -83,7 +84,7 @@ function makeRequest(url, callback) {
 
             objData.Social          = search.social(arrWebPageHrefs);
             objData.EmailAddresses  = search.email(htmlBody);
-            objData.PhoneNumbers    = search.phone(arrWebPageHrefs);
+            objData.PhoneNumbers    = search.phone(textBodyTrimmed);
             objData.Postcodes       = search.postcode(textBodyTrimmed);
             callback(objData);
         } else {
