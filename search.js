@@ -49,26 +49,16 @@ var search = {
             }
         });
         return arrPhones;
-    }
+    },
+    postcode : function(strBody){
+        var arrEmail = strBody.match(/[A-Za-z]{1,2}[0-9][A-Za-z0-9]?\s?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}/gi);
+        return removeDuplicates(arrEmail);
+    },
 };
 
 function removeDuplicates(arr) {
     let arrUnique = Array.from(new Set(arr))
     return arrUnique
-}
-
-function mobilePhoneSearch(str) {
-    let arrPhone = [];
-    var matchedPhone = str.match(/(070|071|072|073|074|075|076|077|078|079)\d{7,8}$/gi);
-    arrPhone.push(matchedPhone);
-    return removeDuplicates(arrPhone);
-}
-
-function landlinePhoneSearch(str) {
-    let arrPhone = [];
-    var matchedPhone = str.match(/^0([1-6][0-9]{8,10}|7[0-9]{9})$/gi);
-    arrPhone.push(matchedPhone);
-    return removeDuplicates(arrPhone);
 }
 
 module.exports = search;

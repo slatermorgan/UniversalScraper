@@ -46,8 +46,6 @@ app.get('/result', function(req, res){
         arrFacebook  = objData[0].Social.facebook,
         arrTwitter   = objData[0].Social.twitter;
 
-    console.log(objData[0]);
-
     res.render(
         'result',
         {
@@ -86,25 +84,12 @@ function makeRequest(url, callback) {
             objData.Social          = search.social(arrWebPageHrefs);
             objData.EmailAddresses  = search.email(htmlBody);
             objData.PhoneNumbers    = search.phone(arrWebPageHrefs);
+            objData.Postcodes       = search.postcode(textBodyTrimmed);
             callback(objData);
         } else {
             console.log("error:" + err);
         }
     });
-}
-
-function mobilePhoneSearch(str) {
-    let arrPhone = [];
-    var matchedPhone = str.match(/(070|071|072|073|074|075|076|077|078|079)\d{7,8}$/gi);
-    arrPhone.push(matchedPhone);
-    return removeDuplicates(arrPhone);
-}
-
-function landlinePhoneSearch(str) {
-    let arrPhone = [];
-    var matchedPhone = str.match(/^0([1-6][0-9]{8,10}|7[0-9]{9})$/gi);
-    arrPhone.push(matchedPhone);
-    return removeDuplicates(arrPhone);
 }
 
 app.listen(3000);
