@@ -27,6 +27,8 @@ app.get('/', function(req, res){
 app.get('/scrape', function(req, res){
     let strLink = req.query.link;
     makeRequest(strLink, function (objData) {
+        console.log('before flash:');
+        console.log(objData);
         req.flash('objData', objData)
         res.redirect('/result');
     });
@@ -39,7 +41,8 @@ app.get('/result', function(req, res){
     if (!objData[0]) {
         res.redirect('/');
     }
-    console.log(objData);
+        console.log('after flash:');
+        console.log(objData);
     let arrEmails    = objData[0].EmailAddresses,
         arrPhones    = objData[0].PhoneNumbers,
         arrPostcodes = objData[0].Postcodes,
@@ -56,7 +59,6 @@ app.get('/result', function(req, res){
             linkedIn  : arrLinkedIn,
             facebook  : arrFacebook,
             twitter   : arrTwitter,
-
         }
     );
 });
