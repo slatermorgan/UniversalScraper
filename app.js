@@ -39,7 +39,7 @@ app.get('/result', function(req, res){
     if (!objData[0]) {
         res.redirect('/');
     }
-
+    console.log(objData);
     let arrEmails    = objData[0].EmailAddresses,
         arrPhones    = objData[0].PhoneNumbers,
         arrPostcodes = objData[0].Postcodes,
